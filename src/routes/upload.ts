@@ -18,14 +18,19 @@ const router = Router();
 })*/
 
 
-const upload = multer({
-    storage: multer.memoryStorage() //memoria perigo
-});
-
-
 /*const upload = multer({
-    dest: './tmp'
-})*/
+    storage: multer.memoryStorage() //memoria perigo
+});*/
+
+
+const upload = multer({
+    dest: './tmp',
+    fileFilter: (req, file, cb) => {
+        const allowed: string[] = ['image/jpg', 'image/jpeg', 'image/png']
+        cb(null, allowed.includes(file.mimetype))
+    },
+    limits: { fieldNameSize: 100, fieldSize: 2000000 }
+})
 
 router.post('/upload', upload.single('avatar'), uploadController.uploadFile)
 router.post('/uploads', upload.array('avatars', 2), uploadController.uploadsFile)
