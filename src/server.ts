@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import cors from 'cors'
 
 import apiRound from './routes/api';
+import uploadRound from './routes/upload';
+
 
 dotenv.config();
 
@@ -16,7 +18,7 @@ server.use(express.static(path.join(__dirname, '../public')));
 server.use(express.urlencoded({ extended: true }));
 
 server.use('/api', apiRound)
-
+server.use('/upload', uploadRound)
 
 
 server.use((req: Request, res: Response) => {

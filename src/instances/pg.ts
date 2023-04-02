@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 
 dotenv.config();
 
-const { PG_DB, PG_USER, PG_PASS, PG_PORT, PG_HOST } = process.env
+const { PG_DB, PG_USER, PG_PASS, PG_PORT } = process.env
 
 export const sequelize = new Sequelize(
     PG_DB as string,
