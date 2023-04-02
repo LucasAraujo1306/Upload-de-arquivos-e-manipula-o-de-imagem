@@ -37,4 +37,11 @@ export const uploadMultiplo = async (req: Request, res: Response) => {
     return res.json({})
 }
 
+export const file = async (req: Request, res: Response) => {
+    console.log('file', req.file);
+    console.log('files', req.files)
+
+    return res.json({})
+}
+
 
