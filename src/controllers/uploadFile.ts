@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import sharp from "sharp";
 
 export const uploadFile = async (req: Request, res: Response) => {
     console.log(req.file)
@@ -38,10 +39,19 @@ export const uploadMultiplo = async (req: Request, res: Response) => {
 }
 
 export const file = async (req: Request, res: Response) => {
-    console.log('file', req.file);
-    console.log('files', req.files)
+    if (req.file) {
+        await sharp(req.file.path)
+            .resize(300, 300)//largura x altura
+            .toFormat('jpeg')
+            .toFile(`./public/media/${req.file.filename}.jpg`)
 
-    return res.json({})
+        res.json({ image: `${req.file.filename}.jpg` })
+    } else (
+        res.status(400).json({ error: 'Arquivo inválido' })
+    )
+
+
 }
+
 
 
