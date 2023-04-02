@@ -1,3 +1,4 @@
+import { unlink } from 'fs/promises'
 import { Request, Response } from "express";
 import sharp from "sharp";
 
@@ -40,12 +41,15 @@ export const uploadMultiplo = async (req: Request, res: Response) => {
 
 export const file = async (req: Request, res: Response) => {
     if (req.file) {
+        const filename = `${req.file.filename}.jpg`
         await sharp(req.file.path)
             .resize(300, 300)//largura x altura
             .toFormat('jpeg')
-            .toFile(`./public/media/${req.file.filename}.jpg`)
+            .toFile(`./public/media/${filename}`)
 
-        res.json({ image: `${req.file.filename}.jpg` })
+        await unlink(req.file.path);
+
+        res.json({ image: `${filename}` })
     } else (
         res.status(400).json({ error: 'Arquivo inválido' })
     )
