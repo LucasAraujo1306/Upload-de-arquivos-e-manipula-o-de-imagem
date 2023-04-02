@@ -1,6 +1,7 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, ErrorRequestHandler } from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
+import { MulterError } from 'multer';
 import cors from 'cors'
 
 import apiRound from './routes/api';
@@ -24,6 +25,19 @@ server.use('/upload', uploadRound)
 server.use((req: Request, res: Response) => {
     res.status(404).json({ error: 'Page Not Found' });
 })
+
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+    res.status(400)//bad Request cliente
+
+    if (err instanceof MulterError) {
+        res.json({ error: err.code });
+    } else {
+        console.log(err);
+        res.json({ error: 'Ocorreu algum erro inesperado' });
+    }
+
+}
+server.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
